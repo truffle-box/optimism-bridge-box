@@ -3,7 +3,7 @@
 require('dotenv').config();
 const ganacheMnemonic = process.env["GANACHE_MNEMONIC"];
 const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
-const mnemonic = 'test test test test test test test test test test test junk' // process.env["MNEMONIC"];
+const mnemonic = process.env["MNEMONIC"]
 
 const infuraKey = process.env["INFURA_KEY"];
 

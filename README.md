@@ -54,6 +54,10 @@ $ truffle unbox optimism-bridge
 
 ## Setup
 
+### Installing dependencies
+
+Run `yarn` to install the necessary npm packages listed in the `package.json` file.
+
 ### Using the env File
 
 You will need at least one mnemonic to use with the network. The `.dotenv` npm package has been installed for you, and you will need to create a `.env` file for storing your mnemonic and any other needed private information.
