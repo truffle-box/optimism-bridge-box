@@ -1,4 +1,10 @@
-# Optimism Box
+# Optimism Bridge Box
+
+Deploy contracts on L1 and L2 and send messages between them.
+
+## 🚨🚨 Work In Progress 🚨🚨
+
+----
 
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -17,11 +23,9 @@
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 
-This Truffle Optimism Box provides you with the boilerplate structure necessary to start coding for Optimism's Ethereum Layer 2 solution. For detailed information on how Optimism works, please see the documentation [here](http://community.optimism.io/docs/developers/integration.html#).
+Truffle Bridge Box provides you with the boilerplate structure necessary to start building applications between multiple Ethereum network layers.
 
-As a starting point, this box contains only the SimpleStorage Solidity contract. Including minimal code was a conscious decision as this box is meant to provide the initial building blocks needed to get to work on Optimism without pushing developers to write any particular sort of application. With this box, you will be able to compile, migrate, and test Optimistic Solidity code against a variety of Optimism test networks.
-
-Optimism's Layer 2 solution is almost fully compatible with the EVM, though it uses an "optimistic" EVM called the OVM. The main difference between the EVM and the OVM that developers will notice is that some opcodes are not available for contracts that are deployed to the OVM. You can see the complete list of differences between Optimism's fork of the `solc` compiler and the original [here](https://github.com/ethereum-optimism/solidity/compare/27d51765c0623c9f6aef7c00214e9fe705c331b1...develop-0.6).
+As a starting point, this box contains basic greeting contracts on L1 and L2, along with a set of migrations for deploying, calling functions, and passing state between them.
 
 ## Requirements
 
@@ -45,7 +49,7 @@ Helpful, but optional:
 > Note that this installation command will only work once the box is published (in the interim you can use `truffle unbox https://github.com/truffle-box/optimism-box`).
 
 ```bash
-$ truffle unbox optimism
+$ truffle unbox optimism-bridge
 ```
 
 ## Setup
