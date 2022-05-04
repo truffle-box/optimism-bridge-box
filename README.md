@@ -62,18 +62,11 @@ The `.env` file is ignored by git in this project, to help protect your private 
 
 If you are unfamiliar with using `.env` for managing your mnemonics and other keys, the basic steps for doing so are below:
 
-1) Use `touch .env` in the command line to create a `.env` file at the root of your project.
+1) Run `cp .env.example .env` in the command line to copy some important variables into your private `.env` file.
 2) Open the `.env` file in your preferred IDE
-3) Add the following, filling in your own Infura project key and mnemonics:
+3) Fill in your mnemonic for the networks you intend to use.
 
-```
-MNEMONIC="candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
-INFURA_KEY="<Your Infura Project ID>"
-GANACHE_MNEMONIC="<Your Ganache Mnemonic>"
-KOVAN_MNEMONIC="<Your Kovan Mnemonic>"
-```
-
-_Note: the value for the `MNEMONIC` above is the one you should use, as it is expected within the local optimistic ethereum network we will run in this Truffle Box._
+_Note: the given value for the `MNEMONIC` variable is the one you should use, as it is expected within the local optimistic ethereum network we will run in this Truffle Box._
 
 4) As you develop your project, you can put any other sensitive information in this file. You can access it from other files with `require('dotenv').config()` and refer to the variable you need with `process.env['<YOUR_VARIABLE>']`.
 
