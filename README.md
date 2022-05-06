@@ -80,9 +80,9 @@ _Note: the given value for the `MNEMONIC` variable is the one you should use, as
 
 This box includes:
 
-- An L1 contract that sends a message to L2.
-- An L2 contract that sends a message to L1.
-- Migrations for deploying these contracts and sending messages
+- An L1 contract that sends a message over the Optimism bridge to L2.
+- An L2 contract that sends a message over the Optimsim bridge to L1.
+- Migrations for deploying these contracts and sending messages.
 - A script to automate the process of compiling contracts and running migrations on each network.
 
 Once you have installed dependencies and set up your `.env` file, you're ready to start bridging!
