@@ -9,7 +9,7 @@ module.exports = async function(deployer) {
     `🙌 Greeter txn confirmed on L1! ${tx.receipt.transactionHash}`
   );
   console.log(
-    `🛣️  Bridging message to L2greeter contrac...`
+    `🛣️  Bridging message to L2greeter contrct...`
   );
   console.log(
     `🕐 In about 10 minutes, check the Greeter contract "read" function: https://kovan-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract`
