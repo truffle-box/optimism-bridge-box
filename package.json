@@ -11,7 +11,8 @@
     "migrate:evm": "truffle migrate",
     "migrate:ovm": "truffle migrate --skip-dry-run --config truffle-config.ovm.js --network $npm_config_network",
     "test:evm": "truffle test",
-    "test:ovm": "truffle test --config truffle-config.ovm.js --network $npm_config_network"
+    "test:ovm": "truffle test --config truffle-config.ovm.js --network $npm_config_network",
+    "deploy": "zx ./scripts/deploy_kovan.mjs"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "@eth-optimism/plugins": "^0.0.20",
     "@eth-optimism/solc": "0.7.6-alpha.1",
     "@truffle/hdwallet-provider": "^1.6.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "zx": "^4.2.0"
   }
 }
