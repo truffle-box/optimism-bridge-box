@@ -95,7 +95,8 @@ yarn deploy
 
 This script automates the following steps:
 
-<insert diagram>
+[//]: <insert diagram>
+[//]: insert example text of output and what they should expect to see
 _____
 
 ## Developing for Optimism

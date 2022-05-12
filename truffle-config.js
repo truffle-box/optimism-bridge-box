@@ -70,7 +70,7 @@ module.exports = {
       network_id: 42,
       chain_id: 42,
       provider: function() {
-        return new HDWalletProvider(kovanMnemonic, "https://kovan.infura.io/v3/"+ infuraKey, 0, 1);
+        return new HDWalletProvider(kovanMnemonic, "wss://kovan.infura.io/ws/v3/"+ infuraKey, 0, 1);
       }
     }
   },
