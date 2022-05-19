@@ -21,31 +21,31 @@ module.exports = async function (deployer) {
 
   // Set providers for Optimism sdk
   // const l1Provider = new ethers.providers.InfuraProvider("kovan", infuraKey);
-
-  // const l1Provider = new ethers.providers.JsonRpcProvider(
-  //   "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey
-  // );
+  const l1Provider = new ethers.providers.JsonRpcProvider(
+    "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey
+  );
   // const l1Provider = new ethers.providers.Web3Provider(
   //   l1Config.networks.kovan.provider()
   // );
 
+  //TODO - move to config
   console.log("set provider1");
   const wallet = ethers.Wallet.fromMnemonic(kovanMnemonic);
   const l1Signer = wallet.connect(l1Provider);
   console.log("set signer: ", l1Signer.address);
 
+  //TODO - move to config
   const l2Provider = new ethers.providers.InfuraProvider(
     "optimism-kovan",
     infuraKey
   );
   console.log("set provider2");
-  //const l2Signer = await l2Provider.getSigner();
 
   // Initialize messenger
   const crossChainMessenger = new sdk.CrossChainMessenger({
     l1ChainId: 42,
     l1SignerOrProvider: l1Signer,
-    l2SignerOrProvider:
+    l2SignerOrProvider: l2Provider,
   });
 
   let expectedBlockTime = 1000;
@@ -57,14 +57,16 @@ module.exports = async function (deployer) {
     // Waiting expectedBlockTime until the transaction is mined
     let status = null;
     try {
+      //TODO - determine why this is failing
       status = await crossChainMessenger.getMessageStatus(txHash);
     } catch (error) {
-      console.log(error == "expected 1 message, got 0");
+      //console.log(error == "expected 1 message, got 0");
     }
     console.log("Message status: ", status);
+    console.log("message status should be", sdk.MessageStatus.READY_FOR_RELAY);
     statusReady = status == sdk.MessageStatus.READY_FOR_RELAY;
     await sleep(expectedBlockTime);
   }
-  const finalize = await crossChainMessenger.finalizeMessage(tx);
+  finalize = await crossChainMessenger.finalizeMessage(txHash);
   console.log("finalized!", finalize);
 };
