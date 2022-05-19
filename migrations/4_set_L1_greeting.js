@@ -4,7 +4,9 @@ const sdk = require("@eth-optimism/sdk");
 const Greeter = artifacts.require("GreeterL2");
 const ethers = require("ethers");
 const infuraKey = process.env["INFURA_KEY"];
+
 const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
+const l1Config = require("../truffle-config");
 
 module.exports = async function (deployer) {
   const instance = await Greeter.deployed();
@@ -18,21 +20,32 @@ module.exports = async function (deployer) {
   );
 
   // Set providers for Optimism sdk
-  const l1Provider = new ethers.providers.InfuraProvider("kovan", infuraKey);
-  const wallet = ethers.Wallet.fromMnemonic(kovanMnemonic, l1Provider);
+  // const l1Provider = new ethers.providers.InfuraProvider("kovan", infuraKey);
+
+  // const l1Provider = new ethers.providers.JsonRpcProvider(
+  //   "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey
+  // );
+  // const l1Provider = new ethers.providers.Web3Provider(
+  //   l1Config.networks.kovan.provider()
+  // );
+
+  console.log("set provider1");
+  const wallet = ethers.Wallet.fromMnemonic(kovanMnemonic);
   const l1Signer = wallet.connect(l1Provider);
+  console.log("set signer: ", l1Signer.address);
 
   const l2Provider = new ethers.providers.InfuraProvider(
     "optimism-kovan",
     infuraKey
   );
+  console.log("set provider2");
   //const l2Signer = await l2Provider.getSigner();
 
   // Initialize messenger
   const crossChainMessenger = new sdk.CrossChainMessenger({
     l1ChainId: 42,
     l1SignerOrProvider: l1Signer,
-    l2SignerOrProvider: l2Provider,
+    l2SignerOrProvider:
   });
 
   let expectedBlockTime = 1000;
@@ -42,7 +55,12 @@ module.exports = async function (deployer) {
   let statusReady = false;
   while (!statusReady) {
     // Waiting expectedBlockTime until the transaction is mined
-    let status = await crossChainMessenger.getMessageStatus(txHash);
+    let status = null;
+    try {
+      status = await crossChainMessenger.getMessageStatus(txHash);
+    } catch (error) {
+      console.log(error == "expected 1 message, got 0");
+    }
     console.log("Message status: ", status);
     statusReady = status == sdk.MessageStatus.READY_FOR_RELAY;
     await sleep(expectedBlockTime);
