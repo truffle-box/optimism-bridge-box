@@ -90,7 +90,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: "node_modules/@eth-optimism/solc",
+      version: "0.8.4", //node_modules/@eth-optimism/solc",
       settings: {
         optimizer: {
           enabled: true,

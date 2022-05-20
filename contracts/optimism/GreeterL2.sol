@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 // This contracts runs on L2, and controls a Greeter on L1.
-pragma solidity ^0.7.6;
+pragma solidity ^0.8.0;
 
 import { ICrossDomainMessenger } from
     "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";

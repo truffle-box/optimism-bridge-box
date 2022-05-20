@@ -20,21 +20,29 @@ module.exports = async function (deployer) {
   );
 
   // Set providers for Optimism sdk
-  // const l1Provider = new ethers.providers.InfuraProvider("kovan", infuraKey);
-  const l1Provider = new ethers.providers.JsonRpcProvider(
-    "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey
-  );
+  const l1Provider = new ethers.providers.InfuraProvider("kovan", infuraKey);
+  // const l1Provider = new ethers.providers.JsonRpcProvider(
+  //   alchemyURL + alchemyKey
+  // );
+
+  //TODO - move to config
+  // const l1Provider = new ethers.providers.JsonRpcProvider(
+  //   "wss://kovan.infura.io/ws/v3/" + infuraKey
+  // );
+  console.log("set provider1");
   // const l1Provider = new ethers.providers.Web3Provider(
   //   l1Config.networks.kovan.provider()
   // );
 
   //TODO - move to config
-  console.log("set provider1");
   const wallet = ethers.Wallet.fromMnemonic(kovanMnemonic);
   const l1Signer = wallet.connect(l1Provider);
   console.log("set signer: ", l1Signer.address);
 
   //TODO - move to config
+  // const l2Provider = new ethers.providers.JsonRpcProvider(
+  //   "https://kovan.optimism.io"
+  // );
   const l2Provider = new ethers.providers.InfuraProvider(
     "optimism-kovan",
     infuraKey
@@ -48,7 +56,7 @@ module.exports = async function (deployer) {
     l2SignerOrProvider: l2Provider,
   });
 
-  let expectedBlockTime = 1000;
+  let expectedBlockTime = 10000;
   const sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
@@ -56,12 +64,7 @@ module.exports = async function (deployer) {
   while (!statusReady) {
     // Waiting expectedBlockTime until the transaction is mined
     let status = null;
-    try {
-      //TODO - determine why this is failing
-      status = await crossChainMessenger.getMessageStatus(txHash);
-    } catch (error) {
-      //console.log(error == "expected 1 message, got 0");
-    }
+    status = await crossChainMessenger.getMessageStatus(txHash);
     console.log("Message status: ", status);
     console.log("message status should be", sdk.MessageStatus.READY_FOR_RELAY);
     statusReady = status == sdk.MessageStatus.READY_FOR_RELAY;
