@@ -20,23 +20,23 @@
 
 // create a file at the root of your project and name it .env -- there you can set process variables
 // like the mnemomic below. Note: .env is ignored by git in this project to keep your private information safe
-require('dotenv').config();
+require("dotenv").config();
 const mnemonic = process.env["MNEMONIC"];
 const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
 
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 module.exports = {
   /**
-  * contracts_build_directory tells Truffle where to store compiled contracts
-  */
-  contracts_build_directory: './build/ethereum-contracts',
+   * contracts_build_directory tells Truffle where to store compiled contracts
+   */
+  contracts_build_directory: "./build/ethereum-contracts",
 
   /**
-  * contracts_directory tells Truffle where to find your contracts
-  */
-  contracts_directory: './contracts/ethereum',
+   * contracts_directory tells Truffle where to find your contracts
+   */
+  contracts_directory: "./contracts/ethereum",
 
   /**
    * Networks define how you connect to your ethereum client and let you set the
@@ -56,23 +56,28 @@ module.exports = {
     // options below to some value.
     //
     development: {
-      host: "127.0.0.1",     // Localhost (default: none)
-      port: 7545,            // Standard Ethereum port (default: none)
-      network_id: "*",       // Any network (default: none)
+      host: "127.0.0.1", // Localhost (default: none)
+      port: 7545, // Standard Ethereum port (default: none)
+      network_id: "*", // Any network (default: none)
     },
     local_ethereum: {
       network_id: 31337,
-      host: '127.0.0.1',
+      host: "127.0.0.1",
       port: 9545,
-      gasPrice: 0
+      gasPrice: 0,
     },
     kovan: {
       network_id: 42,
       chain_id: 42,
-      provider: function() {
-        return new HDWalletProvider(kovanMnemonic, "wss://kovan.infura.io/ws/v3/"+ infuraKey, 0, 1);
-      }
-    }
+      provider: function () {
+        return new HDWalletProvider(
+          kovanMnemonic,
+          "wss://kovan.infura.io/ws/v3/" + infuraKey,
+          0,
+          1
+        );
+      },
+    },
   },
 
   // Set default mocha options here, use special reporters etc.
@@ -83,7 +88,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.7.6",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.4", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
@@ -92,9 +97,9 @@ module.exports = {
       //  },
       //  evmVersion: "byzantium"
       // }
-    }
+    },
   },
   db: {
-    enabled: false
-  }
+    enabled: false,
+  },
 };

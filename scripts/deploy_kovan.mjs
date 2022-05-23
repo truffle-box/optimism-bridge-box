@@ -14,6 +14,4 @@ await $`truffle migrate --network=optimistic_kovan --config=truffle-config.ovm -
 await $`truffle migrate --network=kovan --f 3 --to 3 --skip-dry-run`;
 
 // Send message from optimism to ethereum
-const txHash =
-  await $`truffle migrate --network=optimistic_kovan --config=truffle-config.ovm --f 4 --to 4 --skip-dry-run`;
-console.log(txHash);
+await $`truffle migrate --network=optimistic_kovan --config=truffle-config.ovm --f 4 --to 4 --skip-dry-run`;

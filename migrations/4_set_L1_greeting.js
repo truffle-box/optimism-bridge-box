@@ -4,50 +4,27 @@ const sdk = require("@eth-optimism/sdk");
 const Greeter = artifacts.require("GreeterL2");
 const ethers = require("ethers");
 const infuraKey = process.env["INFURA_KEY"];
-
 const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
-const l1Config = require("../truffle-config");
 
 module.exports = async function (deployer) {
+  const newGreeting = "👋 Greetings from Truffle!"; //<---- CHANGE THIS VALUE TO YOUR NAME!!!
   const instance = await Greeter.deployed();
-  console.log("Updating the Greetings contract on L1! 👋");
-  const tx = await instance.setGreeting("👋 Greetings from Truffle!");
+  console.log("Updating the L1 Greetings contract from L2! 👋");
+  const tx = await instance.setGreeting(newGreeting);
   const txHash = tx.receipt.transactionHash;
   console.log(`🙌🙌 Greeter txn confirmed on L2! ${txHash}`);
   console.log(`🛣️  Bridging message to L1 Greeter contract...`);
-  console.log(
-    `🕐 In about 1 minute, check the Greeter contract "read" function: https://kovan.etherscan.io/address/0x11fB328D5Bd8E27917535b6d40b881d35BC39Be0#readContract`
-  );
 
   // Set providers for Optimism sdk
   const l1Provider = new ethers.providers.InfuraProvider("kovan", infuraKey);
-  // const l1Provider = new ethers.providers.JsonRpcProvider(
-  //   alchemyURL + alchemyKey
-  // );
-
-  //TODO - move to config
-  // const l1Provider = new ethers.providers.JsonRpcProvider(
-  //   "wss://kovan.infura.io/ws/v3/" + infuraKey
-  // );
-  console.log("set provider1");
-  // const l1Provider = new ethers.providers.Web3Provider(
-  //   l1Config.networks.kovan.provider()
-  // );
-
-  //TODO - move to config
-  const wallet = ethers.Wallet.fromMnemonic(kovanMnemonic);
-  const l1Signer = wallet.connect(l1Provider);
-  console.log("set signer: ", l1Signer.address);
-
-  //TODO - move to config
-  // const l2Provider = new ethers.providers.JsonRpcProvider(
-  //   "https://kovan.optimism.io"
-  // );
   const l2Provider = new ethers.providers.InfuraProvider(
     "optimism-kovan",
     infuraKey
   );
-  console.log("set provider2");
+
+  // Set a signer for L1
+  const wallet = ethers.Wallet.fromMnemonic(kovanMnemonic);
+  const l1Signer = wallet.connect(l1Provider);
 
   // Initialize messenger
   const crossChainMessenger = new sdk.CrossChainMessenger({
@@ -61,15 +38,24 @@ module.exports = async function (deployer) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
   let statusReady = false;
+
+  // Poll the L1 msg status
   while (!statusReady) {
-    // Waiting expectedBlockTime until the transaction is mined
     let status = null;
     status = await crossChainMessenger.getMessageStatus(txHash);
-    console.log("Message status: ", status);
-    console.log("message status should be", sdk.MessageStatus.READY_FOR_RELAY);
     statusReady = status == sdk.MessageStatus.READY_FOR_RELAY;
-    await sleep(expectedBlockTime);
+    if (!statusReady) {
+      console.log(
+        "Message not yet received on L1.\n 🕐 Retrying in 10 seconds..."
+      );
+      await sleep(expectedBlockTime);
+    }
   }
+  console.log("📬 Message received! Finalizing...");
+
+  // Open the message and run on L1
   finalize = await crossChainMessenger.finalizeMessage(txHash);
-  console.log("finalized!", finalize);
+  console.log(
+    `🎉 Message finalized. Check the L1 Greeter contract "read" function: https://kovan.etherscan.io/address/0x11fB328D5Bd8E27917535b6d40b881d35BC39Be0#readContract`
+  );
 };
