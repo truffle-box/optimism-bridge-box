@@ -4,7 +4,10 @@ require("dotenv").config();
 const ganacheMnemonic = process.env["GANACHE_MNEMONIC"];
 const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
 const mnemonic = process.env["MNEMONIC"];
+const ethers = require("ethers");
 
+const alchemyOptimismKovanKey = process.env["ALCHEMY_OPTIMISM_KOVAN_KEY"];
+const alchemyOptimismKovanUrl = process.env["ALCHEMY_OPTIMISM_KOVAN_URL"];
 const infuraKey = process.env["INFURA_KEY"];
 
 //uncomment to use mainnetMnemonic, be sure to set it in the .env file
@@ -60,10 +63,19 @@ module.exports = {
       network_id: 69,
       chain_id: 69,
       provider: function () {
-        //return new HDWalletProvider(kovanMnemonic, "wss://optimism-kovan.infura.io/ws/v3/"+ infuraKey, 0, 1);
+        //ETHERS
+        // const l1Provider = new ethers.providers.JsonRpcProvider(
+        //   "https://optimism-kovan.infura.io/v3/" + infuraKey
+        // );
+        // const wallet = ethers.Wallet.fromMnemonic(kovanMnemonic);
+        // wallet.connect(l1Provider);
+        // return l1Provider;
+
+        // WEB3js
         return new HDWalletProvider(
           kovanMnemonic,
-          "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey,
+          alchemyOptimismKovanUrl + alchemyOptimismKovanKey,
+          // "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey,
           0,
           1
         );

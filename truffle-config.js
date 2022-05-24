@@ -22,8 +22,12 @@
 // like the mnemomic below. Note: .env is ignored by git in this project to keep your private information safe
 require("dotenv").config();
 const mnemonic = process.env["MNEMONIC"];
+const ethers = require("ethers");
 const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
+
+const alchemyKovanKey = process.env["ALCHEMY_KOVAN_KEY"];
+const alchemyKovanUrl = process.env["ALCHEMY_KOVAN_URL"];
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
