@@ -70,9 +70,20 @@ module.exports = {
       port: 9545,
       gasPrice: 0,
     },
+    rinkeby: {
+      network_id: "*",
+      provider: function () {
+        return new HDWalletProvider(
+          kovanMnemonic,
+          alchemyKovanUrl + alchemyKovanKey,
+          //"wss://rinkeby.infura.io/ws/v3/" + infuraKey,
+          0,
+          1
+        );
+      },
+    },
     kovan: {
       network_id: 42,
-      chain_id: 42,
       provider: function () {
         return new HDWalletProvider(
           kovanMnemonic,
