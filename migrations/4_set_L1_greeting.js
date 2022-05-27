@@ -27,7 +27,7 @@ module.exports = async function (deployer) {
     `🛣️  Bridging message to L1 Greeter contract.\n 🕐 This will take at least 1-5 min...`
   );
   // Sleep for 1 min during L2 -> L1 bridge
-  await sleep(60000);
+  await sleep(10000);
 
   // Set providers for Optimism sdk
 

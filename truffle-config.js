@@ -75,8 +75,8 @@ module.exports = {
       provider: function () {
         return new HDWalletProvider(
           kovanMnemonic,
-          alchemyKovanUrl + alchemyKovanKey,
-          //"wss://rinkeby.infura.io/ws/v3/" + infuraKey,
+          //alchemyKovanUrl + alchemyKovanKey,
+          "wss://rinkeby.infura.io/ws/v3/" + infuraKey,
           0,
           1
         );

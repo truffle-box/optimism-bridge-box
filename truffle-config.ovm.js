@@ -74,8 +74,8 @@ module.exports = {
         // WEB3js
         return new HDWalletProvider(
           kovanMnemonic,
-          alchemyOptimismKovanUrl + alchemyOptimismKovanKey,
-          // "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey,
+          //alchemyOptimismKovanUrl + alchemyOptimismKovanKey,
+          "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey,
           0,
           1
         );
