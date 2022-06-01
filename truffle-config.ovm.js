@@ -15,6 +15,13 @@ const infuraKey = process.env["INFURA_KEY"];
 
 const { ganache } = require("@eth-optimism/plugins/ganache");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
+const optimismKovanProvider = new HDWalletProvider(
+  kovanMnemonic,
+  //alchemyOptimismKovanUrl + alchemyOptimismKovanKey,
+  "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey,
+  0,
+  1
+);
 
 module.exports = {
   /**
@@ -72,13 +79,7 @@ module.exports = {
         // return l1Provider;
 
         // WEB3js
-        return new HDWalletProvider(
-          kovanMnemonic,
-          //alchemyOptimismKovanUrl + alchemyOptimismKovanKey,
-          "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey,
-          0,
-          1
-        );
+        return optimismKovanProvider;
       },
     },
     // requires a mainnet mnemonic; you can save this in .env or in whatever secure location

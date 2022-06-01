@@ -31,6 +31,14 @@ const alchemyKovanUrl = process.env["ALCHEMY_KOVAN_URL"];
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
+const kovanProvider = new HDWalletProvider(
+  kovanMnemonic,
+  //alchemyKovanUrl + alchemyKovanKey,
+  "wss://kovan.infura.io/ws/v3/" + infuraKey,
+  0,
+  1
+);
+
 module.exports = {
   /**
    * contracts_build_directory tells Truffle where to store compiled contracts
@@ -70,27 +78,10 @@ module.exports = {
       port: 9545,
       gasPrice: 0,
     },
-    rinkeby: {
-      network_id: "*",
-      provider: function () {
-        return new HDWalletProvider(
-          kovanMnemonic,
-          //alchemyKovanUrl + alchemyKovanKey,
-          "wss://rinkeby.infura.io/ws/v3/" + infuraKey,
-          0,
-          1
-        );
-      },
-    },
     kovan: {
       network_id: 42,
       provider: function () {
-        return new HDWalletProvider(
-          kovanMnemonic,
-          "wss://kovan.infura.io/ws/v3/" + infuraKey,
-          0,
-          1
-        );
+        return kovanProvider;
       },
     },
   },
