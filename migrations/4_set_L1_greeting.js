@@ -17,7 +17,7 @@ const sleep = (milliseconds) => {
 };
 
 module.exports = async function (deployer) {
-  const newGreeting = "👋 Greetings from Kevin!"; //<---- CHANGE THIS VALUE TO YOUR NAME!!!
+  const newGreeting = "👋👋 Greetings from Truffle!"; //<---- CHANGE THIS VALUE TO YOUR NAME!!!
   const instance = await Greeter.deployed();
   console.log("Updating the L1 Greetings contract from L2! 👋");
   const tx = await instance.setGreeting(newGreeting);
@@ -41,7 +41,7 @@ module.exports = async function (deployer) {
   //   alchemyOptimismKovanKey
   // );
 
-  // Infura
+  // Re-initialize providers using ethers
   const l1Provider = new ethers.providers.JsonRpcProvider(
     "https://kovan.infura.io/v3/" + infuraKey
   );

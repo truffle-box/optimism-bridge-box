@@ -6,20 +6,20 @@ This box contains basic greeting contracts on L1 and L2, along with a set of mig
 
 ## 🚨🚨 Work In Progress 🚨🚨
 
-----
+---
 
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Setup](#setup)
-  * [Using the .env File](#using-the-env-file)
-  * [New Configuration File](#new-configuration-file)
-  * [New Directory Structure for Artifacts](#new-directory-structure-for-artifacts)
+  - [Using the .env File](#using-the-env-file)
+  - [New Configuration File](#new-configuration-file)
+  - [New Directory Structure for Artifacts](#new-directory-structure-for-artifacts)
 - [Optimistic Ethereum](#optimistic-ethereum)
-  * [Compiling](#compiling)
-  * [Migrating](#migrating)
-  * [Basic Commands](#basic-commands)
-  * [Testing](#testing)
-  * [Communication Between Ethereum and Optimism Chains](#communication-between-ethereum-and-optimism-chains)
+  - [Compiling](#compiling)
+  - [Migrating](#migrating)
+  - [Basic Commands](#basic-commands)
+  - [Testing](#testing)
+  - [Communication Between Ethereum and Optimism Chains](#communication-between-ethereum-and-optimism-chains)
 - [Support](#support)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -35,11 +35,10 @@ The Optimism Box has the following requirements:
 - Recommended Docker memory allocation of >=8 GB.
 - Windows, Linux or MacOS
 
-
 Helpful, but optional:
+
 - An [Infura](https://infura.io/) account and Project ID
 - A [MetaMask](https://metamask.io/) account
-
 
 ## Installation
 
@@ -67,27 +66,29 @@ The `.env` file is ignored by git in this project to help protect your private d
 
 If you are unfamiliar with using `.env` for managing your mnemonics and other keys, the basic steps for doing so are below:
 
-1) Run `cp .env.example .env` in the command line to copy some important variables into a private `.env` file.
-2) Open the `.env` file in your preferred IDE
-3) Fill in your mnemonic for the networks you intend to use, as well as your [Infura key](https://blog.infura.io/getting-started-with-infura-28e41844cc89/).
+1. Run `cp .env.example .env` in the command line to copy some important variables into a private `.env` file.
+2. Open the `.env` file in your preferred IDE
+3. Fill in your mnemonic for the networks you intend to use, as well as your [Infura key](https://blog.infura.io/getting-started-with-infura-28e41844cc89/).
 
 _Note: the given value for the `MNEMONIC` variable is the one you should use, as it is expected within the local optimistic ethereum network we will run in this Truffle Box._
 
-4) As you develop your project, you can put any other sensitive information in the `.env` file. You can access it from other files with `require('dotenv').config()` and refer to the variable you need with `process.env['<YOUR_VARIABLE>']`.
-
+4. As you develop your project, you can put any other sensitive information in the `.env` file. You can access it from other files with `require('dotenv').config()` and refer to the variable you need with `process.env['<YOUR_VARIABLE>']`.
 
 ## Bridging
 
 This box includes:
 
-- An L1 contract that sends a message over the Optimism bridge to L2.
-- An L2 contract that sends a message over the Optimsim bridge to L1.
-- Migrations for deploying these contracts and sending messages.
-- A script to automate the process of compiling contracts and running migrations on each network.
+- An [L1 contract](/contracts/ethereum/GreeterL1.sol) that sends a message over the Optimism bridge.
+- A [Migration](/migrations/3_set_L2_greeting.js) that sends a message from Ethereum to Optimism.
+- An [L2 contract](/contracts/optimism/GreeterL2.sol) that sends a message over the Optimism bridge.
+- A [Migration](/migrations/4_set_L1_greeting.js) that sends a message from Ethereum to Optimism.
+- A [script](/scripts/deploy.mjs) to automate the process of compiling contracts and running migrations across each network.
 
-Once you have installed dependencies and set up your `.env` file, you're ready to start bridging!
+Once you have installed dependencies and set up your `.env` file, you're ready to start bridging! Review and run the provided migrations to facilitate bridging messages between Optimism and Ethereum.
 
-To run the full compilation, migration, and bridging [script](/scripts/deploy.mjs), run:
+## Demo
+
+Included is a helper [script](/scripts/deploy.mjs) that facilitates the full compilation, migration, and bridging of messages between Kovan and Optimism Kovan. To use it, you will need testnet ETH on those networks. Use [a faucet](https://community.optimism.io/docs/useful-tools/faucets/) if you need some. Once you have some on each, run:
 
 ```bash
 yarn deploy
@@ -95,28 +96,25 @@ yarn deploy
 
 This script automates the following steps:
 
-[//]: <insert diagram>
-[//]: insert example text of output and what they should expect to see
-_____
+![Migration steps](./optimism-bridge-box.png)
+
+Upon completion of migration 3, you will be prompted with a link to confirm the bridged message via Etherscan:
+
+```bash
+🛣️  Bridging message to L2 Greeter contract...
+🕐 In about 1 minute, check the Greeter contract "read" function: https://kovan-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract
+```
+
+Upon completion of migration 3, you will be prompted with a link to confirm the bridged message via Etherscan:
+
+```bash
+🛣️  Bridging message to L2 Greeter contract...
+🕐 In about 1 minute, check the Greeter contract "read" function: https://kovan-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract
+```
+
+---
 
 ## Developing for Optimism
-
-The code here will allow you to compile, migrate, and test your code against an Optimistic Ethereum instance. The following commands can be run (more details on each can be found in the next section):
-
- To compile:
- ```
- npm run compile:ovm
- ```
-
- To migrate:
- ```
- npm run migrate:ovm --network=(ganache | optimistic_ethereum | optimistic_kovan)
- ```
-
- To test:
- ```
- npm run test:ovm --network=(ganache | optimistic_ethereum | optimistic_kovan)
- ```
 
 To learn more about developing for Optimism, see the [Truffle Optimism Box](https://github.com/truffle-box/optimism-box/)
 
