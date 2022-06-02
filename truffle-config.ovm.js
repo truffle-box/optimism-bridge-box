@@ -1,25 +1,36 @@
 // create a file at the root of your project and name it .env -- there you can set process variables
 // like the mnemomic below. Note: .env is ignored by git in this project to keep your private information safe
 require("dotenv").config();
-const ganacheMnemonic = process.env["GANACHE_MNEMONIC"];
-const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
-const mnemonic = process.env["MNEMONIC"];
-const ethers = require("ethers");
-
-const alchemyOptimismKovanKey = process.env["ALCHEMY_OPTIMISM_KOVAN_KEY"];
-const alchemyOptimismKovanUrl = process.env["ALCHEMY_OPTIMISM_KOVAN_URL"];
-const infuraKey = process.env["INFURA_KEY"];
-
-//uncomment to use mainnetMnemonic, be sure to set it in the .env file
-//const mainnetMnemonic = process.env["MAINNET_MNEMONIC"]
-
 const { ganache } = require("@eth-optimism/plugins/ganache");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
+const ganacheMnemonic = process.env["GANACHE_MNEMONIC"];
+const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
+const mnemonic = process.env["MNEMONIC"];
+const mainnetMnemonic = process.env["MAINNET_MNEMONIC"];
+const infuraKey = process.env["INFURA_KEY"];
+
+// Initialize Providers outside of the module.exports
+const optimismEthereumProvider = new HDWalletProvider({
+  mnemonic: {
+    phrase: mnemonic,
+  },
+  providerOrUrl: "http://127.0.0.1:8545/",
+  addressIndex: 0,
+  numberOfAddresses: 1,
+  chainId: 420,
+});
+
 const optimismKovanProvider = new HDWalletProvider(
   kovanMnemonic,
-  //alchemyOptimismKovanUrl + alchemyOptimismKovanKey,
   "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey,
+  0,
+  1
+);
+
+const optimismMainnetProvider = new HDWalletProvider(
+  mainnetMnemonic,
+  "wss://optimism-mainnet.infura.io/ws/v3/" + infuraKey,
   0,
   1
 );
@@ -55,17 +66,7 @@ module.exports = {
     // scripts in package.json for steps to get this running on your local machine
     optimistic_ethereum: {
       network_id: 420,
-      provider: function () {
-        return new HDWalletProvider({
-          mnemonic: {
-            phrase: mnemonic,
-          },
-          providerOrUrl: "http://127.0.0.1:8545/",
-          addressIndex: 0,
-          numberOfAddresses: 1,
-          chainId: 420,
-        });
-      },
+      provider: optimismEthereumProvider,
     },
     optimistic_kovan: {
       network_id: 69,
@@ -77,14 +78,7 @@ module.exports = {
     optimistic_mainnet: {
       network_id: 10,
       chain_id: 10,
-      provider: function () {
-        return new HDWalletProvider(
-          mainnetMnemonic,
-          "wss://optimism-mainnet.infura.io/ws/v3/" + infuraKey,
-          0,
-          1
-        );
-      },
+      provider: optimismMainnetProvider,
     },
   },
 

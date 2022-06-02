@@ -21,19 +21,14 @@
 // create a file at the root of your project and name it .env -- there you can set process variables
 // like the mnemomic below. Note: .env is ignored by git in this project to keep your private information safe
 require("dotenv").config();
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+
 const mnemonic = process.env["MNEMONIC"];
-const ethers = require("ethers");
 const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
 
-const alchemyKovanKey = process.env["ALCHEMY_KOVAN_KEY"];
-const alchemyKovanUrl = process.env["ALCHEMY_KOVAN_URL"];
-
-const HDWalletProvider = require("@truffle/hdwallet-provider");
-
 const kovanProvider = new HDWalletProvider(
   kovanMnemonic,
-  //alchemyKovanUrl + alchemyKovanKey,
   "wss://kovan.infura.io/ws/v3/" + infuraKey,
   0,
   1
@@ -80,9 +75,7 @@ module.exports = {
     },
     kovan: {
       network_id: 42,
-      provider: function () {
-        return kovanProvider;
-      },
+      provider: kovanProvider,
     },
   },
 

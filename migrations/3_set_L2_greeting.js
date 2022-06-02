@@ -2,9 +2,11 @@ var Greeter = artifacts.require("GreeterL1");
 
 // L1
 module.exports = async function (deployer) {
-  const instance = await Greeter.deployed();
   console.log("Updating the L2 Greetings contract from L1! 👋👋");
+
+  const instance = await Greeter.deployed();
   const tx = await instance.setGreeting("👋 Greetings from Truffle!");
+
   console.log(`🙌 Greeter txn confirmed on L1! ${tx.receipt.transactionHash}`);
   console.log(`🛣️  Bridging message to L2 Greeter contract...`);
   console.log(
