@@ -11,28 +11,15 @@ const mainnetMnemonic = process.env["MAINNET_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
 
 // Initialize Providers outside of the module.exports
-const optimismEthereumProvider = new HDWalletProvider({
-  mnemonic: {
-    phrase: mnemonic,
-  },
-  providerOrUrl: "http://127.0.0.1:8545/",
-  addressIndex: 0,
-  numberOfAddresses: 1,
-  chainId: 420,
-});
 
 const optimismKovanProvider = new HDWalletProvider(
   kovanMnemonic,
-  "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey,
-  0,
-  1
+  "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey
 );
 
 const optimismMainnetProvider = new HDWalletProvider(
   mainnetMnemonic,
-  "wss://optimism-mainnet.infura.io/ws/v3/" + infuraKey,
-  0,
-  1
+  "wss://optimism-mainnet.infura.io/ws/v3/" + infuraKey
 );
 
 module.exports = {
@@ -66,7 +53,17 @@ module.exports = {
     // scripts in package.json for steps to get this running on your local machine
     optimistic_ethereum: {
       network_id: 420,
-      provider: optimismEthereumProvider,
+      provider: function () {
+        return new HDWalletProvider({
+          mnemonic: {
+            phrase: mnemonic,
+          },
+          providerOrUrl: "http://127.0.0.1:8545/",
+          addressIndex: 0,
+          numberOfAddresses: 1,
+          chainId: 420,
+        });
+      },
     },
     optimistic_kovan: {
       network_id: 69,
