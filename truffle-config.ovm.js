@@ -15,6 +15,7 @@ const infuraKey = process.env["INFURA_KEY"];
 
 const { ganache } = require("@eth-optimism/plugins/ganache");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
+
 const optimismKovanProvider = new HDWalletProvider(
   kovanMnemonic,
   //alchemyOptimismKovanUrl + alchemyOptimismKovanKey,
@@ -69,18 +70,7 @@ module.exports = {
     optimistic_kovan: {
       network_id: 69,
       chain_id: 69,
-      provider: function () {
-        //ETHERS
-        // const l1Provider = new ethers.providers.JsonRpcProvider(
-        //   "https://optimism-kovan.infura.io/v3/" + infuraKey
-        // );
-        // const wallet = ethers.Wallet.fromMnemonic(kovanMnemonic);
-        // wallet.connect(l1Provider);
-        // return l1Provider;
-
-        // WEB3js
-        return optimismKovanProvider;
-      },
+      provider: optimismKovanProvider,
     },
     // requires a mainnet mnemonic; you can save this in .env or in whatever secure location
     // you wish to use
