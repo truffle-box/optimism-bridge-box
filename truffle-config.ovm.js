@@ -3,24 +3,13 @@
 require("dotenv").config();
 const { ganache } = require("@eth-optimism/plugins/ganache");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
+const optimismKovanProvider = require("./providers");
 
 const ganacheMnemonic = process.env["GANACHE_MNEMONIC"];
 const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
 const mnemonic = process.env["MNEMONIC"];
 const mainnetMnemonic = process.env["MAINNET_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
-
-// Initialize Providers outside of the module.exports
-
-const optimismKovanProvider = new HDWalletProvider(
-  kovanMnemonic,
-  "wss://optimism-kovan.infura.io/ws/v3/" + infuraKey
-);
-
-const optimismMainnetProvider = new HDWalletProvider(
-  mainnetMnemonic,
-  "wss://optimism-mainnet.infura.io/ws/v3/" + infuraKey
-);
 
 module.exports = {
   /**
@@ -75,7 +64,12 @@ module.exports = {
     optimistic_mainnet: {
       network_id: 10,
       chain_id: 10,
-      provider: optimismMainnetProvider,
+      provider: function () {
+        return new HDWalletProvider(
+          mainnetMnemonic,
+          "wss://optimism-mainnet.infura.io/ws/v3/" + infuraKey
+        );
+      },
     },
   },
 
