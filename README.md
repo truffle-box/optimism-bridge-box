@@ -98,19 +98,33 @@ This script automates the following steps:
 
 ![Migration steps](./optimism-bridge-box.png)
 
-Upon completion of migration 3, you will be prompted with a link to confirm the bridged message via Etherscan:
+### Expected Output
+
+#### Migration 1 + 2
+
+The first two migrations are simple contract deploys to each network. These are necessary for the following migrations.
+
+#### Migration 3
+
+Upon completion of the migration, you will be prompted with a link to confirm the bridged message via Etherscan:
 
 ```bash
 🛣️  Bridging message to L2 Greeter contract...
 🕐 In about 1 minute, check the Greeter contract "read" function: https://kovan-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract
 ```
 
-Upon completion of migration 3, you will be prompted with a link to confirm the bridged message via Etherscan:
+Click the link and open the `greet` function to see your greeting!
+
+#### Migration 4
+
+Upon completion of the migration, you will be prompted with a link to confirm the bridged message via Etherscan:
 
 ```bash
-🛣️  Bridging message to L2 Greeter contract...
-🕐 In about 1 minute, check the Greeter contract "read" function: https://kovan-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract
+📬 Message received! Finalizing...
+🎉 Message finalized. Check the L1 Greeter contract "read" function: https://kovan.etherscan.io/address/0x11fB328D5Bd8E27917535b6d40b881d35BC39Be0#readContract
 ```
+
+Click the link and open the `greet` function to see your greeting!
 
 ---
 
