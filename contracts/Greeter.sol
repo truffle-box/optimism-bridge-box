@@ -2,9 +2,14 @@
 pragma solidity ^0.8.0;
 
 // For cross domain messages' origin
-import { ICrossDomainMessenger } from 
+import { ICrossDomainMessenger } from
     "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 
+/**
+ * FOR REFERENCE ONLY:
+ * optimism-bridge-box uses a pre-deployed instance of this contract.
+ * While the box does not deploy this contract, it is included for your reference.
+ */
 contract Greeter {
   string greeting;
 
