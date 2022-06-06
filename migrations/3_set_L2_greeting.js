@@ -1,6 +1,9 @@
 var Greeter = artifacts.require("GreeterL1");
 
-// L1
+/**
+ * Set L2 Greeting
+ * Run this migration on L1 to update the L1 greeting.
+ */
 module.exports = async function (deployer) {
   console.log("Updating the L2 Greetings contract from L1! 👋👋");
 

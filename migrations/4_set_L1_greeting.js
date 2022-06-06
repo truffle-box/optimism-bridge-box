@@ -1,4 +1,3 @@
-// This contracts runs on L2, and controls a Greeter on L1.
 require("dotenv").config();
 const sdk = require("@eth-optimism/sdk");
 const ethers = require("ethers");
@@ -11,6 +10,10 @@ const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
+/**
+ * Set L1 Greeting
+ * Run this migration on L1 to update the L1 greeting.
+ */
 module.exports = async function (deployer) {
   const newGreeting = "👋 Greetings from Truffle!"; //<---- CHANGE THIS VALUE TO YOUR NAME!!!
   const instance = await Greeter.deployed();
