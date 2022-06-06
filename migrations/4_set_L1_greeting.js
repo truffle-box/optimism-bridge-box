@@ -47,8 +47,7 @@ module.exports = async function (deployer) {
   let statusReady = false;
 
   // Sleep for 1 min during L2 -> L1 bridging
-  //await sleep(60000); // 60 seconds
-  await sleep(10000); // 10 seconds
+  await sleep(60000); // 60 seconds
 
   // Poll the L1 msg status
   while (!statusReady) {
