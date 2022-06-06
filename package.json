@@ -12,7 +12,7 @@
     "migrate:ovm": "truffle migrate --skip-dry-run --config truffle-config.ovm.js --network $npm_config_network",
     "test:evm": "truffle test",
     "test:ovm": "truffle test --config truffle-config.ovm.js --network $npm_config_network",
-    "deploy": "zx ./scripts/deploy_kovan.mjs"
+    "deploy": "zx ./scripts/kovan_bridge_message.mjs"
   },
   "repository": {
     "type": "git",
