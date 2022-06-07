@@ -1,8 +1,8 @@
 # Optimism Bridge Box
 
-Truffle Optimism Bridge Box provides you with the boilerplate structure necessary to start building applications between multiple Ethereum network layers.
+Truffle Optimism Bridge Box provides you with setup necessary to start building applications between multiple Ethereum network layers.
 
-This box contains basic greeting contracts on L1 and L2, along with a set of migrations for deploying, calling functions, and passing state between them.
+This box contains contracts that interact with the Optimism bridge on L1 and L2, along with a set of migrations for deploying, calling functions, and passing messages and value between both layers.
 
 ## 🚨🚨 Work In Progress 🚨🚨
 
@@ -81,14 +81,14 @@ This box includes:
 - An [L1 contract](/contracts/ethereum/GreeterL1.sol) that sends a message over the Optimism bridge.
 - A [Migration](/migrations/3_set_L2_greeting.js) that sends a message from Ethereum to Optimism.
 - An [L2 contract](/contracts/optimism/GreeterL2.sol) that sends a message over the Optimism bridge.
-- A [Migration](/migrations/4_set_L1_greeting.js) that sends a message from Ethereum to Optimism.
+- A [Migration](/migrations/4_set_L1_greeting.js) that sends a message from Optimism to Ethereum.
 - A [script](/scripts/deploy.mjs) to automate the process of compiling contracts and running migrations across each network.
 
-Once you have installed dependencies and set up your `.env` file, you're ready to start bridging! Review and run the provided migrations to facilitate bridging messages between Optimism and Ethereum.
+Once you have installed dependencies and set up your `.env` file, you're ready to start bridging!
 
 ## Demo
 
-Included is a helper [script](/scripts/deploy.mjs) that facilitates the full compilation, migration, and bridging of messages between Kovan and Optimism Kovan. To use it, you will need testnet ETH on those networks. Use [a faucet](https://community.optimism.io/docs/useful-tools/faucets/) if you need some. Once you have some on each, run:
+Included is a helper [script](/scripts/deploy.mjs) that facilitates the full compilation, migration, and bridging of messages between Kovan and Optimism Kovan. To use it, you will need testnet ETH on those networks. Use [a faucet](https://community.optimism.io/docs/useful-tools/faucets/) to receive some. Once you have some ETH on each network, run:
 
 ```bash
 yarn deploy
@@ -98,17 +98,19 @@ This script automates the following steps:
 
 ![Migration steps](./optimism-bridge-box.png)
 
-### Expected Output
-
-#### Migration 1 + 2
+### Migration 1 + 2
 
 The first two migrations are simple contract deploys to each network. These are necessary for the following migrations.
 
-#### Migration 3
+### Migration 3
 
 Upon completion of the migration, you will be prompted with a link to confirm the bridged message via Etherscan:
 
+_Expected output:_
+
 ```bash
+Updating the L2 Greetings contract from L1! 👋👋
+🙌 Greeter txn confirmed on L1! 0xabc...
 🛣️  Bridging message to L2 Greeter contract...
 🕐 In about 1 minute, check the Greeter contract "read" function: https://kovan-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract
 ```
@@ -119,14 +121,31 @@ Click the link and open the `greet` function to see your greeting!
 
 Upon completion of the migration, you will be prompted with a link to confirm the bridged message via Etherscan:
 
+_Expected output:_
+
 ```bash
+Updating the L1 Greetings contract from L2! 👋
+🙌🙌 Greeter txn confirmed on L2! 0x93d390d84e99a0e229ef813afe4b42d2cfed8ac1f8f0711e721cce4eab30046c
+🛣️  Bridging message to L1 Greeter contract.
+ 🕐 This will take at least 1-5 min...
+Message not yet received on L1.
+ 🕐 Retrying in 10 seconds...
 📬 Message received! Finalizing...
 🎉 Message finalized. Check the L1 Greeter contract "read" function: https://kovan.etherscan.io/address/0x11fB328D5Bd8E27917535b6d40b881d35BC39Be0#readContract
 ```
 
 Click the link and open the `greet` function to see your greeting!
 
----
+## Known Issues
+
+There is known issue that occurs under certain network conditions resulting in the failure of migration 4 with the following error:
+
+```bash
+Error: Could not find block
+@trufflesuite/web3-provider-engine/index.js:163
+```
+
+This is due to an issue with a dependency and we are working on a fix. In the meantime, if you encounter this, it is safe to simply rerun that migration with `truffle migrate --network=optimistic_kovan --config=truffle-config.ovm --f 4 --to 4 --skip-dry-run`.
 
 ## Developing for Optimism
 
