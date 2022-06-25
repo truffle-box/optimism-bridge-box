@@ -2,7 +2,6 @@ require("dotenv").config();
 const sdk = require("@eth-optimism/sdk");
 const ethers = require("ethers");
 const Greeter = artifacts.require("GreeterL2");
-
 const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
 
