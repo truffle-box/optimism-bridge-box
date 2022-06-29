@@ -82,11 +82,12 @@ This box includes:
 - A [Migration](/migrations/3_set_L2_greeting.js) that sends a message from Ethereum to Optimism.
 - An [L2 contract](/contracts/optimism/GreeterL2.sol) that sends a message over the Optimism bridge.
 - A [Migration](/migrations/4_set_L1_greeting.js) that sends a message from Optimism to Ethereum.
-- A [script](/scripts/deploy.mjs) to automate the process of compiling contracts and running migrations across each network.
+- A [script](/scripts/kovan_bridge_message.mjs) to automate the process of compiling contracts, running migrations, and sending messages across each side of the bridge.
+- A [script](/scripts/kovan_bridge_value.js) to automate the process of sending ETH and DAI across each side of the bridge.
 
 Once you have installed dependencies and set up your `.env` file, you're ready to start bridging!
 
-## Demo
+## Messaging Demo
 
 Included is a helper [script](/scripts/deploy.mjs) that facilitates the full compilation, migration, and bridging of messages between Kovan and Optimism Kovan. To use it, you will need testnet ETH on those networks. Use [a faucet](https://community.optimism.io/docs/useful-tools/faucets/) to receive some. Once you have some ETH on each network, run:
 
