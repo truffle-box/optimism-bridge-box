@@ -89,7 +89,9 @@ Once you have installed dependencies and set up your `.env` file, you're ready t
 
 ## Messaging Demo
 
-Included is a helper [script](/scripts/deploy.mjs) that facilitates the full compilation, migration, and bridging of messages between Kovan and Optimism Kovan. To use it, you will need testnet ETH on those networks. Use [a faucet](https://community.optimism.io/docs/useful-tools/faucets/) to receive some. Once you have some ETH on each network, run:
+Included is a helper [script](/scripts/deploy.mjs) that facilitates the full compilation, migration, and bridging of messages between Kovan and Optimism Kovan. To use it, you will need testnet ETH on those networks. Use [a faucet](https://community.optimism.io/docs/useful-tools/faucets/) to receive some. Additionally, you will need to [add the Optimism addon](https://blog.infura.io/post/infura-launches-support-for-optimistic-ethereum) to your Infura account.
+
+Once youre ready, run:
 
 ```bash
 yarn deploy
