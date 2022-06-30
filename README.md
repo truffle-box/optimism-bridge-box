@@ -1,31 +1,28 @@
 # Optimism Bridge Box
 
-Deploy contracts on L1 and L2 and send messages between them.
+Truffle Optimism Bridge Box provides you with setup necessary to start building applications between multiple Ethereum network layers.
+
+This box contains contracts that interact with the Optimism bridge on L1 and L2, along with a set of migrations for deploying, calling functions, and passing messages and value between both layers.
 
 ## 🚨🚨 Work In Progress 🚨🚨
 
-----
+---
 
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Setup](#setup)
-  * [Using the .env File](#using-the-env-file)
-  * [New Configuration File](#new-configuration-file)
-  * [New Directory Structure for Artifacts](#new-directory-structure-for-artifacts)
+  - [Using the .env File](#using-the-env-file)
+  - [New Configuration File](#new-configuration-file)
+  - [New Directory Structure for Artifacts](#new-directory-structure-for-artifacts)
 - [Optimistic Ethereum](#optimistic-ethereum)
-  * [Compiling](#compiling)
-  * [Migrating](#migrating)
-  * [Basic Commands](#basic-commands)
-  * [Testing](#testing)
-  * [Communication Between Ethereum and Optimism Chains](#communication-between-ethereum-and-optimism-chains)
+  - [Compiling](#compiling)
+  - [Migrating](#migrating)
+  - [Basic Commands](#basic-commands)
+  - [Testing](#testing)
+  - [Communication Between Ethereum and Optimism Chains](#communication-between-ethereum-and-optimism-chains)
 - [Support](#support)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
-Truffle Bridge Box provides you with the boilerplate structure necessary to start building applications between multiple Ethereum network layers.
-
-As a starting point, this box contains basic greeting contracts on L1 and L2, along with a set of migrations for deploying, calling functions, and passing state between them.
 
 ## Requirements
 
@@ -38,11 +35,10 @@ The Optimism Box has the following requirements:
 - Recommended Docker memory allocation of >=8 GB.
 - Windows, Linux or MacOS
 
-
 Helpful, but optional:
+
 - An [Infura](https://infura.io/) account and Project ID
 - A [MetaMask](https://metamask.io/) account
-
 
 ## Installation
 
@@ -54,125 +50,109 @@ $ truffle unbox optimism-bridge
 
 ## Setup
 
+### Installing dependencies
+
+Install the necessary npm dependencies:
+
+```bash
+yarn install
+```
+
 ### Using the env File
 
 You will need at least one mnemonic to use with the network. The `.dotenv` npm package has been installed for you, and you will need to create a `.env` file for storing your mnemonic and any other needed private information.
 
-The `.env` file is ignored by git in this project, to help protect your private data. In general, it is good security practice to avoid committing information about your private keys to github. The `truffle-config.ovm.js` file expects a `GANACHE_MNEMONIC` and a `KOVAN_MNEMONIC` value to exist in `.env` for running commands on each of these networks, as well as a default `MNEMONIC` for the optimistic network we will run locally.
+The `.env` file is ignored by git in this project to help protect your private data. It is good security practice to avoid committing information about your private keys to github. The `truffle-config.ovm.js` file expects a `GANACHE_MNEMONIC` and a `KOVAN_MNEMONIC` value to exist in `.env` for running commands on each of these networks, as well as a default `MNEMONIC` for the optimistic network we will run locally.
 
 If you are unfamiliar with using `.env` for managing your mnemonics and other keys, the basic steps for doing so are below:
 
-1) Use `touch .env` in the command line to create a `.env` file at the root of your project.
-2) Open the `.env` file in your preferred IDE
-3) Add the following, filling in your own Infura project key and mnemonics:
+1. Run `cp .env.example .env` in the command line to copy some important variables into a private `.env` file.
+2. Open the `.env` file in your preferred IDE
+3. Fill in your mnemonic for the networks you intend to use, as well as your [Infura key](https://blog.infura.io/getting-started-with-infura-28e41844cc89/).
 
-```
-MNEMONIC="candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
-INFURA_KEY="<Your Infura Project ID>"
-GANACHE_MNEMONIC="<Your Ganache Mnemonic>"
-KOVAN_MNEMONIC="<Your Kovan Mnemonic>"
-```
+_Note: the given value for the `MNEMONIC` variable is the one you should use, as it is expected within the local optimistic ethereum network we will run in this Truffle Box._
 
-_Note: the value for the `MNEMONIC` above is the one you should use, as it is expected within the local optimistic ethereum network we will run in this Truffle Box._
+4. As you develop your project, you can put any other sensitive information in the `.env` file. You can access it from other files with `require('dotenv').config()` and refer to the variable you need with `process.env['<YOUR_VARIABLE>']`.
 
-4) As you develop your project, you can put any other sensitive information in this file. You can access it from other files with `require('dotenv').config()` and refer to the variable you need with `process.env['<YOUR_VARIABLE>']`.
+## Bridging
 
-### New Configuration File
+This box includes:
 
-A new configuration file exists in this project: `truffle-config.ovm.js`. This file contains a reference to the new file location of the `contracts_build_directory` and `contracts_directory` for Optimism contracts and lists several networks for running the Optimism Layer 2 network instance (see [below](#migrating)).
+- An [L1 contract](/contracts/ethereum/GreeterL1.sol) that sends a message over the Optimism bridge.
+- A [Migration](/migrations/3_set_L2_greeting.js) that sends a message from Ethereum to Optimism.
+- An [L2 contract](/contracts/optimism/GreeterL2.sol) that sends a message over the Optimism bridge.
+- A [Migration](/migrations/4_set_L1_greeting.js) that sends a message from Optimism to Ethereum.
+- A [script](/scripts/kovan_bridge_message.mjs) to automate the process of compiling contracts, running migrations, and sending messages across each side of the bridge.
+- A [script](/scripts/kovan_bridge_value.js) to automate the process of sending ETH and DAI across each side of the bridge.
 
-Please note, the classic `truffle-config.js` configuration file is included here as well, because you will eventually want to deploy contracts to Ethereum as well. All normal truffle commands (`truffle compile`, `truffle migrate`, etc.) will use this config file and save built files to `build/ethereum-contracts`. You can save Solidity contracts that you wish to deploy to Ethereum in the `contracts/ethereum` folder.
+Once you have installed dependencies and set up your `.env` file, you're ready to start bridging!
 
-### New Directory Structure for Artifacts
+## Messaging Demo
 
-When you compile or migrate, the resulting `json` files will be at `build/optimism-contracts/`. This is to distinguish them from any Ethereum contracts you build, which will live in `build/ethereum-contracts`. As we have included the appropriate `contracts_build_directory` in each configuration file, Truffle will know which set of built files to reference!
+Included is a helper [script](/scripts/deploy.mjs) that facilitates the full compilation, migration, and bridging of messages between Kovan and Optimism Kovan. To use it, you will need testnet ETH on those networks. Use [a faucet](https://community.optimism.io/docs/useful-tools/faucets/) to receive some. Additionally, you will need to [add the Optimism addon](https://blog.infura.io/post/infura-launches-support-for-optimistic-ethereum) to your Infura account.
 
-## Optimistic Ethereum
+Once youre ready, run:
 
-### Compiling
-
-To compile your project using the Optimistic `solc` compiler, run the following in your terminal:
-
-```
-npm run compile:ovm
+```bash
+yarn deploy
 ```
 
-This script lets Truffle know to use the `truffle-config.ovm.js` configuration file, which references the Optimistic `solc` compiler. When adding new contracts to compile, you may find some discrepancies and errors, so please remember to keep an eye on [differences between solc and optimistic solc](https://github.com/ethereum-optimism/solidity/compare/27d51765c0623c9f6aef7c00214e9fe705c331b1...develop-0.6)!
+This script automates the following steps:
 
-Please note: the optimistic `solc` compiler we have included relies on the latest version of the package, and currently uses *version 0.7.6*. If you would like to use a different version of `solc`, see the available optimistic versions [here](https://www.npmjs.com/package/@eth-optimism/solc), and run:
+![Migration steps](./optimism-bridge-box.png)
 
+### Migration 1 + 2
+
+The first two migrations are simple contract deploys to each network. These are necessary for the following migrations.
+
+### Migration 3
+
+Upon completion of the migration, you will be prompted with a link to confirm the bridged message via Etherscan:
+
+_Expected output:_
+
+```bash
+Updating the L2 Greetings contract from L1! 👋👋
+🙌 Greeter txn confirmed on L1! 0xabc...
+🛣️  Bridging message to L2 Greeter contract...
+🕐 In about 1 minute, check the Greeter contract "read" function: https://kovan-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract
 ```
-npm install @eth-optimism/solc@<YourVersion>
+
+Click the link and open the `greet` function to see your greeting!
+
+#### Migration 4
+
+Upon completion of the migration, you will be prompted with a link to confirm the bridged message via Etherscan:
+
+_Expected output:_
+
+```bash
+Updating the L1 Greetings contract from L2! 👋
+🙌🙌 Greeter txn confirmed on L2! 0x93d390d84e99a0e229ef813afe4b42d2cfed8ac1f8f0711e721cce4eab30046c
+🛣️  Bridging message to L1 Greeter contract.
+ 🕐 This will take at least 1-5 min...
+Message not yet received on L1.
+ 🕐 Retrying in 10 seconds...
+📬 Message received! Finalizing...
+🎉 Message finalized. Check the L1 Greeter contract "read" function: https://kovan.etherscan.io/address/0x11fB328D5Bd8E27917535b6d40b881d35BC39Be0#readContract
 ```
 
-You can double check that you have the version you want by looking at the `package.json` dependencies in this project.
+Click the link and open the `greet` function to see your greeting!
 
-If you would like to recompile previously compiled contracts, you can manually run this command with `truffle compile --config truffle-config.ovm.js` and add the `--all` flag.
+## Known Issues
 
-### Migrating
+There is known issue that occurs under certain network conditions resulting in the failure of migration 4 with the following error:
 
-To migrate on an Optimistic Layer 2, run:
-
+```bash
+Error: Could not find block
+@trufflesuite/web3-provider-engine/index.js:163
 ```
-npm run migrate:ovm --network=(ganache | optimistic_ethereum | optimistic_kovan)
-```
 
-(remember to choose a network from these options!).
+This is due to an issue with a dependency and we are working on a fix. In the meantime, if you encounter this, it is safe to simply rerun that migration with `truffle migrate --network=optimistic_kovan --config=truffle-config.ovm --f 4 --to 4 --skip-dry-run`.
 
-You have several Optimistic Layer 2 networks to choose from, prepackaged in this box (note: Layer 1 networks associated with Optimism are included in the regular `truffle-config.js` file, to aid you with further development. But here we'll just go through the Layer 2 deployment options available):
+## Developing for Optimism
 
-- `optimistic_ethereum`: This network is the default Layer 1/Layer 2 integration provided by Optimism for testing your Optimistic Ethereum code. Documentation about this setup can be found [here](https://github.com/ethereum-optimism/optimism).
-  * You will need to install the code for this network in this box in order to use the scripts associated with it. To install it, run `npm run installLocalOptimism`. You should only need to run this initiation command once. It will create an `optimism` directory in this project that will house the repository you need. If at any point you want to update to the latest optimism docker image, you can delete your `optimism` directory and run this command again.
-  * If you wish to use this network, be sure to run `npm run startLocalOptimism` so that the optimism test ecosystem docker image can be served. For our purposes, you should be able to compile, migrate, and test against this network once the docker image is fully running. See [documentation and updates](https://github.com/ethereum-optimism/optimism/tree/develop/ops) about this docker container for additional information.
-  * Please note, after running `npm run startLocalOptimism` it can take several minutes for the test ecosystem to be up and running on your local machine. The first time you run this command, it will take a bit longer for everything to be set up. Future runs will be quicker!
-  * To stop the local docker container, use `npm run stopLocalOptimism` in a new terminal tab to ensure graceful shutdown.
-- `ganache`: This network uses an optimistic ganache instance for migrations. The usage is essentially identical to use of regular ganache.
-- `optimistic_kovan`: Optimism has deployed a testnet to the Kovan network. The RPC endpoint is https://optimism-kovan.infura.io/v3/. In order to access this node for testing, you will need to connect a wallet (we suggest [MetaMask](https://metamask.io/)). Save your seed phrase in a `.env` file as `KOVAN_MNEMONIC`. Using an `.env` file for the mnemonic is safer practice because it is listed in `.gitignore` and thus will not be committed.
-  * Currently, we have the gasPrice for transactions on Optimistic Kovan set to zero. You should be able to use this network as configured at this time.
-  * You will need Kovan ETH in an Optimistic Kovan wallet to deploy contracts using this network. In order to deploy to Optimistic Kovan, you will need to acquire Optimistic Kovan ETH. As of this writing, there is not an Optimistic Kovan ETH faucet. In order to get Optimistic Kovan ETH, follow these steps:
-    1) Acquire ETH for your Kovan wallet on MetaMask using a Kovan faucet.
-    2) Add Optimistic Ethereum as a Custom RPC to your Metamask wallet, using the [steps here](https://community.optimism.io/docs/developers/metamask.html#connecting-manually), except set the RPC URL to `https://optimism-kovan.infura.io/v3/" + <infuraKey>`
-    3) Visit [this website](https://gateway.optimism.io/) to bridge your Kovan ETH to Optimistic Kovan ETH
-    4) Ensure that your `optimistic_kovan` network in `truffle-config.ovm.js` is connected to your Optimistic Kovan wallet.
-
-  _Note: You may get an error about the block limit being exceeded. The Truffle team is working on this issue, but in the meantime you can add this line before the deployment in your `migrations/1_deploy_contracts.js` file: `SimpleStorage.gasMultiplier = 0.9;`_
-
-Layer 1 networks are included in the `truffle-config.js` file, but it is not necessary to deploy your base contracts to Layer 1 right now. Eventually, you will likely have a Layer 2 contract that you want to connect with a Layer 1 contract (they do not have to be identical!). One example is an ERC20 contract that is deployed on an Optimistic Ethereum network. At some point the user will wish to withdraw their funds into Ethereum. There will need to be a contract deployed on Layer 1 that can receive the message from Layer 2 to mint the appropriate tokens on Layer 1 for the user. More information on this system can be found [here](http://community.optimism.io/docs/developers/integration.html#bridging-l1-and-l2).
-
-If you would like to migrate previously migrated contracts on the same network, you can run `truffle migrate --config truffle-config.ovm.js --network=(ganache | optimistic_ethereum | optimistic_kovan)` and add the `--reset` flag.
-
-## Basic Commands
-
-The code here will allow you to compile, migrate, and test your code against an Optimistic Ethereum instance. The following commands can be run (more details on each can be found in the next section):
-
- To compile:
- ```
- npm run compile:ovm
- ```
-
- To migrate:
- ```
- npm run migrate:ovm --network=(ganache | optimistic_ethereum | optimistic_kovan)
- ```
-
- To test:
- ```
- npm run test:ovm --network=(ganache | optimistic_ethereum | optimistic_kovan)
- ```
-
-### Testing
-
-Currently, this box supports testing via Javascript/TypeScript tests. In order to run the test currently in the boilerplate, use the following command:
-
-```
-npm run test:ovm --network=(ganache | optimistic_ethereum | optimistic_kovan)
-```
-Remember that there are some differences between the EVM and the OVM, and refer to the Optimism documentation if you run into test failures.
-
-
-### Communication Between Ethereum and Optimism Chains
-
-The information above should allow you to deploy to the Optimism Layer 2 chain. This is only the first step! Once you are ready to deploy your own contracts to function on Layer 1 using Layer 2, you will need to be aware of the [ways in which Layer 1 and Layer 2 interact in the Optimism ecosystem](http://community.optimism.io/docs/developers/integration.html#bridging-l1-and-l2). Keep an eye out for additional Truffle tooling and examples that elucidate this second step to full optimism integration!
+To learn more about developing for Optimism, see the [Truffle Optimism Box](https://github.com/truffle-box/optimism-box/)
 
 ## Support
 
