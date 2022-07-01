@@ -4,8 +4,6 @@ Truffle Optimism Bridge Box provides you with setup necessary to start building 
 
 This box contains contracts that interact with the Optimism bridge on L1 and L2, along with a set of migrations for deploying, calling functions, and passing messages and value between both layers.
 
-## 🚨🚨 Work In Progress 🚨🚨
-
 ---
 
 - [Requirements](#requirements)
