@@ -3,10 +3,9 @@
 require("dotenv").config();
 const { ganache } = require("@eth-optimism/plugins/ganache");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const optimismKovanProvider = require("./providers");
+const optimismGoerliProvider = require("./providers");
 
 const ganacheMnemonic = process.env["GANACHE_MNEMONIC"];
-const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
 const mnemonic = process.env["MNEMONIC"];
 const mainnetMnemonic = process.env["MAINNET_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
@@ -54,10 +53,10 @@ module.exports = {
         });
       },
     },
-    optimistic_kovan: {
+    optimistic_goerli: {
       network_id: 69,
       chain_id: 69,
-      provider: optimismKovanProvider,
+      provider: optimismGoerliProvider,
     },
     // requires a mainnet mnemonic; you can save this in .env or in whatever secure location
     // you wish to use
