@@ -60,7 +60,7 @@ yarn install
 
 You will need at least one mnemonic to use with the network. The `.dotenv` npm package has been installed for you, and you will need to create a `.env` file for storing your mnemonic and any other needed private information.
 
-The `.env` file is ignored by git in this project to help protect your private data. It is good security practice to avoid committing information about your private keys to github. The `truffle-config.ovm.js` file expects a `GANACHE_MNEMONIC` and a `KOVAN_MNEMONIC` value to exist in `.env` for running commands on each of these networks, as well as a default `MNEMONIC` for the optimistic network we will run locally.
+The `.env` file is ignored by git in this project to help protect your private data. It is good security practice to avoid committing information about your private keys to github. The `truffle-config.ovm.js` file expects a `GANACHE_MNEMONIC` and a `GOERLI_MNEMONIC` value to exist in `.env` for running commands on each of these networks, as well as a default `MNEMONIC` for the optimistic network we will run locally.
 
 If you are unfamiliar with using `.env` for managing your mnemonics and other keys, the basic steps for doing so are below:
 
@@ -80,14 +80,14 @@ This box includes:
 - A [Migration](/migrations/3_set_L2_greeting.js) that sends a message from Ethereum to Optimism.
 - An [L2 contract](/contracts/optimism/GreeterL2.sol) that sends a message over the Optimism bridge.
 - A [Migration](/migrations/4_set_L1_greeting.js) that sends a message from Optimism to Ethereum.
-- A [script](/scripts/kovan_bridge_message.mjs) to automate the process of compiling contracts, running migrations, and sending messages across each side of the bridge.
-- A [script](/scripts/kovan_bridge_value.js) to automate the process of sending ETH and DAI across each side of the bridge.
+- A [script](/scripts/goerli_bridge_message.mjs) to automate the process of compiling contracts, running migrations, and sending messages across each side of the bridge.
+- A [script](/scripts/goerli_bridge_value.js) to automate the process of sending ETH and DAI across each side of the bridge.
 
 Once you have installed dependencies and set up your `.env` file, you're ready to start bridging!
 
 ## Messaging Demo
 
-Included is a helper [script](/scripts/deploy.mjs) that facilitates the full compilation, migration, and bridging of messages between Kovan and Optimism Kovan. To use it, you will need testnet ETH on those networks. Use [a faucet](https://community.optimism.io/docs/useful-tools/faucets/) to receive some. Additionally, you will need to [add the Optimism addon](https://blog.infura.io/post/infura-launches-support-for-optimistic-ethereum) to your Infura account.
+Included is a helper [script](/scripts/deploy.mjs) that facilitates the full compilation, migration, and bridging of messages between Goerli and Optimism Goerli. To use it, you will need testnet ETH on those networks. Use [a faucet](https://community.optimism.io/docs/useful-tools/faucets/) to receive some. Additionally, you will need to [add the Optimism addon](https://blog.infura.io/post/infura-launches-support-for-optimistic-ethereum) to your Infura account.
 
 Once youre ready, run:
 
@@ -113,7 +113,7 @@ _Expected output:_
 Updating the L2 Greetings contract from L1! 👋👋
 🙌 Greeter txn confirmed on L1! 0xabc...
 🛣️  Bridging message to L2 Greeter contract...
-🕐 In about 1 minute, check the Greeter contract "read" function: https://kovan-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract
+🕐 In about 1 minute, check the Greeter contract "read" function: https://goerli-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract
 ```
 
 Click the link and open the `greet` function to see your greeting!
@@ -132,7 +132,7 @@ Updating the L1 Greetings contract from L2! 👋
 Message not yet received on L1.
  🕐 Retrying in 10 seconds...
 📬 Message received! Finalizing...
-🎉 Message finalized. Check the L1 Greeter contract "read" function: https://kovan.etherscan.io/address/0x11fB328D5Bd8E27917535b6d40b881d35BC39Be0#readContract
+🎉 Message finalized. Check the L1 Greeter contract "read" function: https://goerli.etherscan.io/address/0x11fB328D5Bd8E27917535b6d40b881d35BC39Be0#readContract
 ```
 
 Click the link and open the `greet` function to see your greeting!
@@ -146,7 +146,7 @@ Error: Could not find block
 @trufflesuite/web3-provider-engine/index.js:163
 ```
 
-This is due to an issue with a dependency and we are working on a fix. In the meantime, if you encounter this, it is safe to simply rerun that migration with `truffle migrate --network=optimistic_kovan --config=truffle-config.ovm --f 4 --to 4 --skip-dry-run`.
+This is due to an issue with a dependency and we are working on a fix. In the meantime, if you encounter this, it is safe to simply rerun that migration with `truffle migrate --network=optimistic_goerli --config=truffle-config.ovm --f 4 --to 4 --skip-dry-run`.
 
 ## Developing for Optimism
 

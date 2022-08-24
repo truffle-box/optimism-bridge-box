@@ -2,7 +2,7 @@ require("dotenv").config();
 const sdk = require("@eth-optimism/sdk");
 const ethers = require("ethers");
 const Greeter = artifacts.require("GreeterL2");
-const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
+const goerliMnemonic = process.env["GOERLI_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
 
 const sleep = (milliseconds) => {
@@ -29,14 +29,14 @@ module.exports = async function (deployer) {
 
   // Set providers for Optimism sdk
   const l1Provider = new ethers.providers.JsonRpcProvider(
-    "https://kovan.infura.io/v3/" + infuraKey
+    "https://goerli.infura.io/v3/" + infuraKey
   );
   const l2Provider = new ethers.providers.JsonRpcProvider(
-    "https://optimism-kovan.infura.io/v3/" + infuraKey
+    "https://optimism-goerli.infura.io/v3/" + infuraKey
   );
 
   // Connect an L1 signer
-  const wallet = ethers.Wallet.fromMnemonic(kovanMnemonic);
+  const wallet = ethers.Wallet.fromMnemonic(goerliMnemonic);
   const l1Signer = wallet.connect(l1Provider);
 
   // Initialize sdk messenger
@@ -69,6 +69,6 @@ module.exports = async function (deployer) {
   // Open the message on L1
   finalize = await crossChainMessenger.finalizeMessage(txHash);
   console.log(
-    `🎉 Message finalized. Check the L1 Greeter contract "read" function: https://kovan.etherscan.io/address/0x11fB328D5Bd8E27917535b6d40b881d35BC39Be0#readContract`
+    `🎉 Message finalized. Check the L1 Greeter contract "read" function: https://goerli.etherscan.io/address/0x7fA4D972bB15B71358da2D937E4A830A9084cf2e#readContract`
   );
 };

@@ -10,7 +10,7 @@ import { ICrossDomainMessenger } from
  * optimism-bridge-box uses a pre-deployed instance of this contract.
  * While the box does not deploy this contract, it is included for your reference.
  */
-contract Greeter {
+ contract Greeter {
   string greeting;
 
   event SetGreeting(
@@ -36,8 +36,9 @@ contract Greeter {
   function getXorig() private view returns (address) {
     // Get the cross domain messenger's address each time.
     // This is less resource intensive than writing to storage.
-    address cdmAddr = address(0);    
+    address cdmAddr = address(0);
 
+    // Mainnet
     if (block.chainid == 1)
       cdmAddr = 0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1;
 
@@ -45,8 +46,12 @@ contract Greeter {
     if (block.chainid == 42)
       cdmAddr = 0x4361d0F75A0186C05f971c566dC6bEa5957483fD;
 
-    // L2
-    if (block.chainid == 10 || block.chainid == 69)
+    // Goerli
+    if (block.chainid == 5)
+      cdmAddr = 0x5086d1eEF304eb5284A0f6720f79403b4e9bE294;
+
+    // L2 (same address on every network)
+    if (block.chainid == 10 || block.chainid == 69 || block.chainid == 420)
       cdmAddr = 0x4200000000000000000000000000000000000007;
 
     // If this isn't a cross domain message
@@ -57,3 +62,4 @@ contract Greeter {
     return ICrossDomainMessenger(cdmAddr).xDomainMessageSender();
   }    // getXorig()
 }   // contract Greeter
+

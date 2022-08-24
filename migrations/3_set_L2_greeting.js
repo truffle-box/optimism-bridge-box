@@ -13,6 +13,6 @@ module.exports = async function (deployer) {
   console.log(`🙌 Greeter txn confirmed on L1! ${tx.receipt.transactionHash}`);
   console.log(`🛣️  Bridging message to L2 Greeter contract...`);
   console.log(
-    `🕐 In about 1 minute, check the Greeter contract "read" function: https://kovan-optimistic.etherscan.io/address/0xD4c204223d6F1Dfad0b7a0b05BB0bCaB6665e0c9#readContract`
+    `🕐 In about 1 minute, check the Greeter contract "read" function: https://goerli-optimistic.etherscan.io/address/0xC0836cCc8FBa87637e782Dde6e6572aD624fb984#readContract`
   );
 };
