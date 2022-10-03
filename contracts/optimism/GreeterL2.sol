@@ -8,7 +8,7 @@ import { ICrossDomainMessenger } from
 contract GreeterL2 {
     address crossDomainMessengerAddr = 0x4200000000000000000000000000000000000007;
 
-    address greeterL1Addr = 0x11fB328D5Bd8E27917535b6d40b881d35BC39Be0;
+    address greeterL1Addr = 0x7fA4D972bB15B71358da2D937E4A830A9084cf2e;
 
     function setGreeting(string calldata _greeting) public {
         bytes memory message;

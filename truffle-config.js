@@ -24,12 +24,12 @@ require("dotenv").config();
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 const mnemonic = process.env["MNEMONIC"];
-const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
+const goerliMnemonic = process.env["GOERLI_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
 
-const kovanProvider = new HDWalletProvider(
-  kovanMnemonic,
-  "wss://kovan.infura.io/ws/v3/" + infuraKey,
+const goerliProvider = new HDWalletProvider(
+  goerliMnemonic,
+  "wss://goerli.infura.io/ws/v3/" + infuraKey,
   0,
   1
 );
@@ -73,9 +73,9 @@ module.exports = {
       port: 9545,
       gasPrice: 0,
     },
-    kovan: {
+    goerli: {
       network_id: 42,
-      provider: kovanProvider,
+      provider: goerliProvider,
     },
   },
 

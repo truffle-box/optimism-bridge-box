@@ -3,10 +3,10 @@ require("dotenv").config();
 const optimismSDK = require("@eth-optimism/sdk");
 const ethers = require("ethers");
 
-const kovanMnemonic = process.env["KOVAN_MNEMONIC"];
+const goerliMnemonic = process.env["GOERLI_MNEMONIC"];
 const infuraKey = process.env["INFURA_KEY"];
-const l1Url = "https://kovan.infura.io/v3/" + infuraKey;
-const l2Url = "https://optimism-kovan.infura.io/v3/" + infuraKey;
+const l1Url = "https://goerli.infura.io/v3/" + infuraKey;
+const l2Url = "https://optimism-goerli.infura.io/v3/" + infuraKey;
 
 // Contract addresses for DAI tokens, taken
 // from https://static.optimism.io/optimism.tokenlist.json
@@ -44,7 +44,7 @@ let addr; // Our address
 const getSigners = async () => {
   const l1RpcProvider = new ethers.providers.JsonRpcProvider(l1Url);
   const l2RpcProvider = new ethers.providers.JsonRpcProvider(l2Url);
-  const hdNode = ethers.utils.HDNode.fromMnemonic(kovanMnemonic);
+  const hdNode = ethers.utils.HDNode.fromMnemonic(goerliMnemonic);
   const privateKey = hdNode.derivePath(ethers.utils.defaultPath).privateKey;
   const l1Wallet = new ethers.Wallet(privateKey, l1RpcProvider);
   const l2Wallet = new ethers.Wallet(privateKey, l2RpcProvider);
@@ -60,10 +60,11 @@ const setup = async () => {
   const [l1Signer, l2Signer] = await getSigners();
   addr = l1Signer.address;
   crossChainMessenger = new optimismSDK.CrossChainMessenger({
-    l1ChainId: 42, // For Kovan, it's 1 for Mainnet
-    l1SignerOrProvider: l1Signer,
-    l2SignerOrProvider: l2Signer,
-  });
+      l1ChainId: 5,    // Goerli value, 1 for mainnet
+      l2ChainId: 420,  // Goerli value, 10 for mainnet
+      l1SignerOrProvider: l1Signer,
+      l2SignerOrProvider: l2Signer
+  })
   l1ERC20 = new ethers.Contract(daiAddrs.l1Addr, erc20ABI, l1Signer);
   l2ERC20 = new ethers.Contract(daiAddrs.l2Addr, erc20ABI, l2Signer);
 }; // setup
