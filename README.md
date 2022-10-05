@@ -9,67 +9,49 @@ This box contains contracts that interact with the Optimism bridge on L1 and L2,
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Setup](#setup)
+  - [Installing dependencies](#installing-dependencies)
   - [Using the .env File](#using-the-env-file)
-  - [New Configuration File](#new-configuration-file)
-  - [New Directory Structure for Artifacts](#new-directory-structure-for-artifacts)
-- [Optimistic Ethereum](#optimistic-ethereum)
-  - [Compiling](#compiling)
-  - [Migrating](#migrating)
-  - [Basic Commands](#basic-commands)
-  - [Testing](#testing)
-  - [Communication Between Ethereum and Optimism Chains](#communication-between-ethereum-and-optimism-chains)
+- [Bridging](#bridging)
+- [Messaging Demo](#messaging-demo)
+  - [Known Issues](#known-issues)
+- [Developing for Optimism](#developing-for-optimism)
 - [Support](#support)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 ## Requirements
 
-The Optimism Box has the following requirements:
+We recommend following these instructions [here](https://trufflesuite.com/docs/truffle/getting-started/installation/). The Optimism Box has the following requirements:
 
-- [Node.js](https://nodejs.org/) 10.x or later
+- [Node.js](https://nodejs.org/) v12 - 16 or later
 - [NPM](https://docs.npmjs.com/cli/) version 5.2 or later
-- [docker](https://docs.docker.com/get-docker/), version 19.03.12 or later
-- [docker-compose](https://docs.docker.com/compose/install/), version 1.27.3 or later
-- Recommended Docker memory allocation of >=8 GB.
 - Windows, Linux or MacOS
-
-Helpful, but optional:
-
 - An [Infura](https://infura.io/) account and Project ID
 - A [MetaMask](https://metamask.io/) account
 
 ## Installation
 
-> Note that this installation command will only work once the box is published (in the interim you can use `truffle unbox https://github.com/truffle-box/optimism-box`).
-
 ```bash
-$ truffle unbox optimism-bridge
+$ truffle unbox optimism-bridge <DIRECTORY_NAME>
 ```
 
 ## Setup
 
 ### Installing dependencies
 
-Install the necessary npm dependencies:
-
-```bash
-yarn install
-```
+`truffle unbox` should run `npm install` as part of the unboxing process.
 
 ### Using the env File
 
-You will need at least one mnemonic to use with the network. The `.dotenv` npm package has been installed for you, and you will need to create a `.env` file for storing your mnemonic and any other needed private information.
+You will need the goerli mnemonic to use with the network. The `.dotenv` npm package has been installed for you, and you will need to create a `.env` file for storing your mnemonic and any other needed private information.
 
-The `.env` file is ignored by git in this project to help protect your private data. It is good security practice to avoid committing information about your private keys to github. The `truffle-config.ovm.js` file expects a `GANACHE_MNEMONIC` and a `GOERLI_MNEMONIC` value to exist in `.env` for running commands on each of these networks, as well as a default `MNEMONIC` for the optimistic network we will run locally.
+The `.env` file is ignored by git in this project to help protect your private data. It is good security practice to avoid committing information about your private keys to github. The `truffle-config.ovm.js` file expects a `GOERLI_MNEMONIC` value to exist in `.env` for running commands on the Goerli and Optimism Goerli testnets and an `INFURA_KEY` to connect to the network.
 
 If you are unfamiliar with using `.env` for managing your mnemonics and other keys, the basic steps for doing so are below:
 
 1. Run `cp .env.example .env` in the command line to copy some important variables into a private `.env` file.
 2. Open the `.env` file in your preferred IDE
 3. Fill in your mnemonic for the networks you intend to use, as well as your [Infura key](https://blog.infura.io/getting-started-with-infura-28e41844cc89/).
-
-_Note: the given value for the `MNEMONIC` variable is the one you should use, as it is expected within the local optimistic ethereum network we will run in this Truffle Box._
-
 4. As you develop your project, you can put any other sensitive information in the `.env` file. You can access it from other files with `require('dotenv').config()` and refer to the variable you need with `process.env['<YOUR_VARIABLE>']`.
 
 ## Bridging
@@ -92,7 +74,7 @@ Included is a helper [script](/scripts/deploy.mjs) that facilitates the full com
 Once youre ready, run:
 
 ```bash
-yarn deploy
+npm run deploy
 ```
 
 This script automates the following steps:
@@ -137,7 +119,7 @@ Message not yet received on L1.
 
 Click the link and open the `greet` function to see your greeting!
 
-## Known Issues
+### Known Issues
 
 There is known issue that occurs under certain network conditions resulting in the failure of migration 4 with the following error:
 
@@ -147,6 +129,14 @@ Error: Could not find block
 ```
 
 This is due to an issue with a dependency and we are working on a fix. In the meantime, if you encounter this, it is safe to simply rerun that migration with `truffle migrate --network=optimistic_goerli --config=truffle-config.ovm --f 4 --to 4 --skip-dry-run`.
+
+## Briding Eth Demo
+
+The script `goerli_bridge_value.mjs` demonstrates how to send ETH and DAI across each side of the bridge. To run it, you will also need DAI on the Goerli network. You can go to Uniswap to exchange ETH for DAI on Goerli. Then call:
+
+```shell
+node ./scripts/goerli_bridge_value.js
+```
 
 ## Developing for Optimism
 

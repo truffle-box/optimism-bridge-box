@@ -41,7 +41,8 @@ module.exports = async function (deployer) {
 
   // Initialize sdk messenger
   const crossChainMessenger = new sdk.CrossChainMessenger({
-    l1ChainId: 42,
+    l1ChainId: 5,
+    l2ChainId: 420,
     l1SignerOrProvider: l1Signer,
     l2SignerOrProvider: l2Provider,
   });
