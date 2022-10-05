@@ -11,7 +11,7 @@ const l2Url = "https://optimism-goerli.infura.io/v3/" + infuraKey;
 // Contract addresses for DAI tokens, taken
 // from https://static.optimism.io/optimism.tokenlist.json
 const daiAddrs = {
-  l1Addr: "0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa",
+  l1Addr: "0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844",
   l2Addr: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
 }; // daiAddrs
 
